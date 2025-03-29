@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<section class="about-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>About BeautyMatch</h2>
+            <p>Your personal beauty assistant for finding the perfect cosmetics</p>
+        </div>
+        
+        <div class="about-content">
+            <div class="about-image">
+                <div class="image-placeholder"></div>
+            </div>
+            
+            <div class="about-text">
+                <h3>Our Mission</h3>
+                <p>
+                    At BeautyMatch, we believe that everyone deserves skincare products that truly work for their unique skin type. 
+                    Our mission is to simplify the often overwhelming world of beauty products by providing personalized recommendations 
+                    based on scientific analysis of ingredients and their compatibility with different skin types.
+                </p>
+                
+                <h3>How It Works</h3>
+                <p>
+                    Our recommendation system analyzes thousands of cosmetic products and their ingredients to determine which ones 
+                    are most suitable for different skin types. We look at:
+                </p>
+                <ul>
+                    <li>Ingredient compatibility with your skin type</li>
+                    <li>Product formulations and their effectiveness</li>
+                    <li>User reviews and ratings</li>
+                    <li>Price points and accessibility</li>
+                </ul>
+                
+                <h3>The Science Behind Our Recommendations</h3>
+                <p>
+                    We use advanced machine learning algorithms to analyze the relationship between ingredients and skin types. 
+                    Our system learns from dermatological research, product formulations, and user feedback to continuously improve 
+                    its recommendations. This allows us to match you with products that contain ingredients known to benefit your 
+                    specific skin concerns.
+                </p>
+            </div>
+        </div>
+        
+        <div class="team-section">
+            <h3>Our Team</h3>
+            <p>BeautyMatch was created by a team of beauty enthusiasts, data scientists, and skincare experts who wanted to make 
+               finding the right products easier for everyone.</p>
+            
+            <div class="cta-box">
+                <h3>Start Your Beauty Journey</h3>
+                <p>Discover products that are perfect for your unique skin needs.</p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">Get Recommendations</a>
+                    <a href="{{ url_for('skin_quiz') }}" class="btn btn-secondary">Take the Skin Quiz</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

@@ -1,0 +1,176 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<section class="quiz-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Skin Type Quiz</h2>
+            <p>Answer a few questions to discover your skin type and get personalized product recommendations</p>
+        </div>
+        
+        <div class="quiz-container">
+            <form id="skin-quiz-form" action="/quiz_result" method="post">
+                <div class="quiz-question" id="question-1">
+                    <h3>How does your skin feel after cleansing?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-feel-tight" name="skin_feel" value="tight" required>
+                            <label for="skin-feel-tight">Tight and dry</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-feel-greasy" name="skin_feel" value="greasy">
+                            <label for="skin-feel-greasy">Greasy or oily</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-feel-both" name="skin_feel" value="both">
+                            <label for="skin-feel-both">Tight in some areas, oily in others</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-feel-comfortable" name="skin_feel" value="comfortable">
+                            <label for="skin-feel-comfortable">Comfortable and balanced</label>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-next" onclick="nextQuestion(1)">Next</button>
+                </div>
+                
+                <div class="quiz-question" id="question-2" style="display: none;">
+                    <h3>How does your skin look throughout the day?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-look-flaky" name="skin_look" value="flaky" required>
+                            <label for="skin-look-flaky">Flaky or dull</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-look-shiny" name="skin_look" value="shiny">
+                            <label for="skin-look-shiny">Shiny all over</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-look-shiny-t-zone" name="skin_look" value="shiny_t_zone">
+                            <label for="skin-look-shiny-t-zone">Shiny in the T-zone, normal or dry elsewhere</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-look-balanced" name="skin_look" value="balanced">
+                            <label for="skin-look-balanced">Balanced with no excess shine</label>
+                        </div>
+                    </div>
+                    <div class="quiz-navigation">
+                        <button type="button" class="btn btn-prev" onclick="prevQuestion(2)">Previous</button>
+                        <button type="button" class="btn btn-next" onclick="nextQuestion(2)">Next</button>
+                    </div>
+                </div>
+                
+                <div class="quiz-question" id="question-3" style="display: none;">
+                    <h3>What's your main skin concern?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-concern-dryness" name="skin_concern" value="dryness" required>
+                            <label for="skin-concern-dryness">Dryness or flakiness</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-concern-acne" name="skin_concern" value="acne">
+                            <label for="skin-concern-acne">Acne or excess oil</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-concern-both" name="skin_concern" value="both">
+                            <label for="skin-concern-both">Both dryness and oiliness</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-concern-redness" name="skin_concern" value="redness">
+                            <label for="skin-concern-redness">Redness or irritation</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="skin-concern-none" name="skin_concern" value="none">
+                            <label for="skin-concern-none">No major concerns</label>
+                        </div>
+                    </div>
+                    <div class="quiz-navigation">
+                        <button type="button" class="btn btn-prev" onclick="prevQuestion(3)">Previous</button>
+                        <button type="button" class="btn btn-next" onclick="nextQuestion(3)">Next</button>
+                    </div>
+                </div>
+                
+                <div class="quiz-question" id="question-4" style="display: none;">
+                    <h3>Do you often experience reactions to skincare products?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option">
+                            <input type="radio" id="reaction-often" name="reaction" value="often" required>
+                            <label for="reaction-often">Yes, frequently</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="reaction-sometimes" name="reaction" value="sometimes">
+                            <label for="reaction-sometimes">Sometimes</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="reaction-rarely" name="reaction" value="rarely">
+                            <label for="reaction-rarely">Rarely or never</label>
+                        </div>
+                    </div>
+                    <div class="quiz-navigation">
+                        <button type="button" class="btn btn-prev" onclick="prevQuestion(4)">Previous</button>
+                        <button type="button" class="btn btn-next" onclick="nextQuestion(4)">Next</button>
+                    </div>
+                </div>
+                
+                <div class="quiz-question" id="question-5" style="display: none;">
+                    <h3>How does your skin react to climate changes?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option">
+                            <input type="radio" id="climate-drier" name="climate" value="drier" required>
+                            <label for="climate-drier">Gets drier in different climates</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="climate-oilier" name="climate" value="oilier">
+                            <label for="climate-oilier">Gets oilier in different climates</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="climate-both" name="climate" value="both">
+                            <label for="climate-both">Varies depending on the climate</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="climate-no-change" name="climate" value="no_change">
+                            <label for="climate-no-change">Stays relatively the same</label>
+                        </div>
+                    </div>
+                    <div class="quiz-navigation">
+                        <button type="button" class="btn btn-prev" onclick="prevQuestion(5)">Previous</button>
+                        <button type="submit" class="btn btn-primary">Get Results</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function nextQuestion(currentQuestion) {
+    // Validate current question
+    const currentQuestionElement = document.getElementById(`question-${currentQuestion}`);
+    const inputs = currentQuestionElement.querySelectorAll('input[type="radio"]');
+    let isAnswered = false;
+    
+    for (let input of inputs) {
+        if (input.checked) {
+            isAnswered = true;
+            break;
+        }
+    }
+    
+    if (!isAnswered) {
+        alert('Please select an answer before proceeding.');
+        return;
+    }
+    
+    // Hide current question and show next
+    document.getElementById(`question-${currentQuestion}`).style.display = 'none';
+    document.getElementById(`question-${currentQuestion + 1}`).style.display = 'block';
+}
+
+function prevQuestion(currentQuestion) {
+    // Hide current question and show previous
+    document.getElementById(`question-${currentQuestion}`).style.display = 'none';
+    document.getElementById(`question-${currentQuestion - 1}`).style.display = 'block';
+}
+</script>
+{% endblock %} 

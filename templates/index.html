@@ -1,0 +1,271 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Find Your Perfect Beauty Match</h1>
+            <p>Discover cosmetics tailored to your unique skin type and preferences</p>
+            <a href="#recommendation-form" class="btn btn-primary">Get Started</a>
+        </div>
+    </div>
+</section>
+
+<section class="recommendation-section" id="recommendation-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Personalized Recommendations</h2>
+            <p>Tell us about your skin and preferences to get customized product suggestions</p>
+        </div>
+        
+        <div class="recommendation-container">
+            <form id="recommendation-form" class="recommendation-form">
+                <div class="form-group">
+                    <label for="skin-type">What's your skin type?</label>
+                    <select id="skin-type" name="skin_type" required>
+                        <option value="dry">Dry</option>
+                        <option value="oily">Oily</option>
+                        <option value="combination">Combination</option>
+                        <option value="sensitive">Sensitive</option>
+                        <option value="normal">Normal</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Product category</label>
+                    <select id="category" name="category">
+                        <option value="all">All Categories</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="price-category">Price range</label>
+                    <select id="price-category" name="price_category">
+                        <option value="all">All Price Ranges</option>
+                        {% for price in price_categories %}
+                        <option value="{{ price }}">{{ price|capitalize }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="num-recommendations">Number of recommendations</label>
+                    <input type="number" id="num-recommendations" name="num_recommendations" min="1" max="10" value="5">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Get Recommendations</button>
+            </form>
+            
+            <div class="results-container" id="results-container">
+                <div class="loading-spinner" id="loading-spinner" style="display: none !important;">
+                    <div class="spinner"></div>
+                    <p>Finding your perfect matches...</p>
+                </div>
+                
+                <div class="recommendations" id="recommendations" style="display: none;">
+                    <!-- Recommendations will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Why Choose BeautyMatch?</h2>
+            <p>Our smart recommendation system helps you find products that truly work for your skin</p>
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-fingerprint"></i>
+                </div>
+                <h3>Personalized</h3>
+                <p>Recommendations tailored to your unique skin type and concerns</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h3>Ingredient-Focused</h3>
+                <p>We analyze ingredients to find what works best for your skin</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Discover New Products</h3>
+                <p>Find hidden gems that are perfect for your skin needs</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM loaded, setting up form handler");
+    
+    // Use a more specific selector to get the form
+    const recommendationForm = document.querySelector('form#recommendation-form');
+    const recommendationsDiv = document.getElementById('recommendations');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    
+    console.log("Form element type:", recommendationForm ? recommendationForm.tagName : 'not found');
+    
+    // Make sure the loading spinner is hidden initially
+    if (loadingSpinner) {
+        loadingSpinner.style.display = 'none';
+    }
+    
+    // Check if elements exist
+    if (!recommendationForm) {
+        console.error("Form element not found!");
+        return; // Exit if form not found to prevent errors
+    } else {
+        console.log("Form element found");
+    }
+    
+    if (!recommendationsDiv) {
+        console.error("Recommendations div not found!");
+    }
+    
+    if (!loadingSpinner) {
+        console.error("Loading spinner not found!");
+    }
+    
+    // Add form submission handler
+    recommendationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        console.log("Form submitted");
+        
+        // Show loading spinner
+        if (loadingSpinner) {
+            loadingSpinner.style.display = 'flex';
+        }
+        
+        if (recommendationsDiv) {
+            recommendationsDiv.style.display = 'none';
+        }
+        
+        try {
+            // Get form data
+            const formData = new FormData(this); // Use 'this' instead of recommendationForm
+            
+            // Log form data for debugging
+            console.log("Form data:");
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
+            
+            // Send AJAX request
+            console.log("Sending fetch request to /recommend");
+            fetch('/recommend', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log("Received response:", response.status, response.statusText);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Parsed JSON data:", data);
+                
+                // Hide loading spinner
+                if (loadingSpinner) {
+                    loadingSpinner.style.display = 'none';
+                }
+                
+                // Show recommendations div
+                if (recommendationsDiv) {
+                    recommendationsDiv.style.display = 'block';
+                }
+                
+                // Display recommendations
+                if (data.recommendations && data.recommendations.length > 0) {
+                    console.log(`Rendering ${data.recommendations.length} recommendations`);
+                    let html = '<div class="product-cards">';
+                    
+                    data.recommendations.forEach((product, index) => {
+                        console.log(`Processing product ${index}:`, product);
+                        html += `
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <div class="product-placeholder"></div>
+                                </div>
+                                <div class="product-details">
+                                    <h4>${product.name || 'Unknown Product'}</h4>
+                                    <p class="product-brand">${product.brand || 'Unknown Brand'}</p>
+                                    <div class="product-meta">
+                                        <span class="product-category">${product.category || 'Unknown Category'}</span>
+                                        <span class="product-price">${product.price || '$0.00'}</span>
+                                    </div>
+                                    <div class="compatibility-meter">
+                                        <span>Compatibility: ${product.compatibility || '0%'}</span>
+                                        <div class="meter">
+                                            <div class="meter-fill" style="width: ${product.compatibility || '0%'};"></div>
+                                        </div>
+                                    </div>
+                                    <p class="product-description">${product.description || 'No description available'}</p>
+                                    <div class="product-ingredients">
+                                        <h5>Key Ingredients:</h5>
+                                        <p>${product.ingredients ? (typeof product.ingredients === 'string' ? product.ingredients.split(',').slice(0, 3).join(', ') + '...' : 'Ingredients list format error') : 'Not available'}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                    recommendationsDiv.innerHTML = html;
+                    console.log("Recommendations HTML rendered");
+                } else {
+                    console.log("No recommendations found");
+                    recommendationsDiv.innerHTML = '<p class="no-results">No products found matching your criteria. Try adjusting your filters.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+                // Hide loading spinner
+                if (loadingSpinner) {
+                    loadingSpinner.style.display = 'none';
+                }
+                
+                // Show recommendations div with error
+                if (recommendationsDiv) {
+                    recommendationsDiv.style.display = 'block';
+                    recommendationsDiv.innerHTML = `<p class="error">An error occurred: ${error.message}. Please try again later.</p>`;
+                }
+            });
+        } catch (error) {
+            console.error("Error creating FormData:", error);
+            alert("There was an error processing your request. Please try again.");
+        }
+    });
+    
+    // Also add a click handler to the submit button as a backup
+    const submitButton = document.querySelector('#recommendation-form button[type="submit"]');
+    if (submitButton) {
+        console.log("Submit button found");
+        submitButton.addEventListener('click', function(e) {
+            console.log("Submit button clicked");
+            // The form's submit event should handle this, this is just a backup
+        });
+    } else {
+        console.error("Submit button not found");
+    }
+});
+</script>
+{% endblock %} 

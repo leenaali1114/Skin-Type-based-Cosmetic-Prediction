@@ -1,0 +1,131 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<section class="quiz-result-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Your Skin Type Results</h2>
+        </div>
+        
+        <div class="result-container">
+            <div class="skin-type-result">
+                <h3>Your skin type is: <span class="skin-type">{{ skin_type|capitalize }}</span></h3>
+                
+                {% if skin_type == 'dry' %}
+                <p class="skin-description">
+                    Dry skin produces less sebum than normal skin and may lack the lipids needed to retain moisture and build a protective shield against external influences. This skin type feels tight and may look flaky, especially after cleansing.
+                </p>
+                <div class="skin-care-tips">
+                    <h4>Skincare Tips for Dry Skin:</h4>
+                    <ul>
+                        <li>Use gentle, hydrating cleansers</li>
+                        <li>Look for products with hyaluronic acid, glycerin, and ceramides</li>
+                        <li>Apply moisturizer while skin is still damp</li>
+                        <li>Consider using facial oils</li>
+                        <li>Avoid hot water when washing your face</li>
+                    </ul>
+                </div>
+                
+                {% elif skin_type == 'oily' %}
+                <p class="skin-description">
+                    Oily skin produces excess sebum, giving the skin a shiny appearance. This skin type is prone to enlarged pores, blackheads, and acne. However, oily skin tends to age better with fewer wrinkles.
+                </p>
+                <div class="skin-care-tips">
+                    <h4>Skincare Tips for Oily Skin:</h4>
+                    <ul>
+                        <li>Use gentle foaming cleansers</li>
+                        <li>Look for products with salicylic acid, niacinamide, and tea tree oil</li>
+                        <li>Use lightweight, oil-free moisturizers</li>
+                        <li>Don't skip moisturizer - it's essential for all skin types</li>
+                        <li>Consider using clay masks 1-2 times per week</li>
+                    </ul>
+                </div>
+                
+                {% elif skin_type == 'combination' %}
+                <p class="skin-description">
+                    Combination skin features areas that are dry as well as oily - typically with an oily T-zone (forehead, nose, and chin) and dry or normal cheeks. This skin type requires balanced care to address both concerns.
+                </p>
+                <div class="skin-care-tips">
+                    <h4>Skincare Tips for Combination Skin:</h4>
+                    <ul>
+                        <li>Use gentle, balanced cleansers</li>
+                        <li>Consider multi-masking (different masks for different areas)</li>
+                        <li>Look for products with niacinamide and hyaluronic acid</li>
+                        <li>Use lightweight moisturizers all over, with richer products on dry areas</li>
+                        <li>Exfoliate regularly but gently</li>
+                    </ul>
+                </div>
+                
+                {% elif skin_type == 'sensitive' %}
+                <p class="skin-description">
+                    Sensitive skin reacts easily to products or environmental factors with redness, itching, or burning. This skin type requires gentle care and products free from common irritants.
+                </p>
+                <div class="skin-care-tips">
+                    <h4>Skincare Tips for Sensitive Skin:</h4>
+                    <ul>
+                        <li>Use fragrance-free, hypoallergenic products</li>
+                        <li>Look for soothing ingredients like aloe vera, chamomile, and oatmeal</li>
+                        <li>Patch test new products before full application</li>
+                        <li>Avoid products with alcohol, fragrance, and essential oils</li>
+                        <li>Use physical sunscreens rather than chemical ones</li>
+                    </ul>
+                </div>
+                
+                {% else %}
+                <p class="skin-description">
+                    Normal skin is well-balanced - neither too oily nor too dry. This skin type has good circulation, a smooth texture, small pores, and is less prone to sensitivity or blemishes.
+                </p>
+                <div class="skin-care-tips">
+                    <h4>Skincare Tips for Normal Skin:</h4>
+                    <ul>
+                        <li>Use gentle cleansers to maintain your skin's natural balance</li>
+                        <li>Look for products with antioxidants and peptides</li>
+                        <li>Use a balanced moisturizer</li>
+                        <li>Don't forget sunscreen daily</li>
+                        <li>Focus on maintaining your skin's health</li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="recommendations-section">
+                <h3>Recommended Products for Your Skin Type</h3>
+                
+                <div class="product-cards">
+                    {% for product in recommendations %}
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="product-placeholder"></div>
+                        </div>
+                        <div class="product-details">
+                            <h4>{{ product.name }}</h4>
+                            <p class="product-brand">{{ product.brand }}</p>
+                            <div class="product-meta">
+                                <span class="product-category">{{ product.category }}</span>
+                                <span class="product-price">{{ product.price }}</span>
+                            </div>
+                            <div class="compatibility-meter">
+                                <span>Compatibility: {{ product.compatibility }}</span>
+                                <div class="meter">
+                                    <div class="meter-fill" style="width: {{ product.compatibility }};"></div>
+                                </div>
+                            </div>
+                            <p class="product-description">{{ product.description }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="next-steps">
+                <h3>What's Next?</h3>
+                <p>Now that you know your skin type, you can make more informed choices about your skincare routine.</p>
+                <div class="next-steps-buttons">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">Find More Products</a>
+                    <a href="{{ url_for('about') }}" class="btn btn-secondary">Learn More About Skincare</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 
